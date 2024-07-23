@@ -1,0 +1,87 @@
+﻿
+
+
+<div class="modal fade" id="ModalBeneficiarios" tabindex="-1" role="dialog" aria-labelledby="TituloModalBeneficiarios" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="TituloModalCentralizado">Beneficiários</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="CPFModal">CPF:</label>
+                        <input type="text" class="form-control" id="CPFModal" name="CPFModal" placeholder="Ex.: 010.011.111-00">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="NomeModal">Nome:</label>
+                        <input type="text" class="form-control" id="NomeModal" name="NomeModal" placeholder="Ex.: Maria" maxlength="50">
+                    </div>
+                    <div class="col-sm-2">
+                        <label> </label>
+                        <button type="button" class="btn btn-success" id="incluirBeneficiario">Incluir</button>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <table class="table table-striped" id="tabelaBeneficiarios">
+                    <thead>
+                        <tr>
+                            <th>CPF</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('incluirBeneficiario').addEventListener('click', function () {
+        var cpf = document.getElementById('CPFModal').value.trim();
+        var nome = document.getElementById('NomeModal').value.trim();
+
+        if (cpf && nome) {
+            var tabela = document.getElementById('tabelaBeneficiarios').getElementsByTagName('tbody')[0];
+            var newRow = tabela.insertRow();
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+
+            cell1.innerHTML = cpf;
+            cell2.innerHTML = nome;
+            cell3.innerHTML = '<button class="btn btn-primary btn-sm editar">Alterar</button> <button class="btn btn-danger btn-sm excluir">Excluir</button>';
+
+            document.getElementById('CPFModal').value = '';
+            document.getElementById('NomeModal').value = '';
+        } else {
+            alert('Por favor, preencha todos os campos.');
+        }
+    });
+
+    document.getElementById('tabelaBeneficiarios').addEventListener('click', function (event) {
+        if (event.target.classList.contains('excluir')) {
+            var row = event.target.closest('tr');
+            row.remove();
+        } else if (event.target.classList.contains('editar')) {
+            var row = event.target.closest('tr');
+            var cells = row.getElementsByTagName('td');
+            var cpf = cells[0].innerText;
+            var nome = cells[1].innerText;
+
+            document.getElementById('CPFModal').value = cpf;
+            document.getElementById('NomeModal').value = nome;
+
+            row.remove();
+        }
+    });
+</script>
